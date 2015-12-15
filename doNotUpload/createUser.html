@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+      <title>Create User</title>
+      <meta charset="UTF-8">
+	  <meta name="robots" content="noindex" />
+      <link rel="stylesheet" type="text/css" href="ToDoApp.css">
+      
+      <script>
+        function handleError(error, message) {
+            setTimeout(function() {
+                error.textContent = message;
+            }, 200);
+        }
+        
+        function handleSignup(signupForm) {
+            var username = signupForm.querySelector("input[name=username]");
+            var passOne = signupForm.querySelector("input[name=passOne]");
+            var passTwo = signupForm.querySelector("input[name=passTwo]");
+            var error = signupForm.querySelector(".error");
+			
+			error.textContent = "";
+			
+			if(!username.value || username.value == "" 
+				|| !passOne.value || passOne.value == ""
+				|| !passTwo.value || passTwo.value == ""){
+					
+					handleError(error, "Both username and passwords are required");
+					return false;
+			}
+			
+			if(passOne.value !== passTwo.value){
+				handleError(error, "Passwords do not match");
+				return false;
+			}
+			
+			var user = new Parse.User();
+			user.set("username", username.value);
+			user.set("password", passOne.value);
+			
+			user.signUp(null, {
+				success: function(user){
+					window.location.href = "./ToDoMain.html";
+				},
+				error: function(user, errorRes){
+					if(errorRes.code === Parse.Error.USERNAME_TAKEN){
+						console.dir(errorRes);
+						handleError(error, "Username already taken");
+					}
+					else{
+						var msg = "We failed to create your account. Please try again later";
+						handleErroe(error, msg);
+					}
+				}
+			});
+        } 
+
+      
+        function init() {
+            var signupForm = document.querySelector("#signupForm");
+            var signupSubmit = document.querySelector("#signupSubmit");
+            
+            Parse.initialize("j98M3FFiX4SE5AMkVMemB3Hx3MRMsYsoOOVPU9E4", "ClttYScbdV99VRVQKc3GgaD41KG95Iiq0TEUabGn");
+            
+			var currentUser = Parse.User.current();
+			if(currentUser){
+				Parse.User.logOut();
+			}
+			
+			signupSubmit.addEventListener("click", function(e){
+				handleSignup(signupForm);
+				e.preventDefault();
+			});
+        }
+      
+        window.onload = init;
+      </script>
+</head>
+<body>
+    <section id="content">
+        <form class="main" id="signupForm" action="#" method="POST">
+            <div class="entry">
+                <label for="usernameSignup">Username: </label>
+                <input id="usernameSignup" name="username" type="text">
+            </div>
+            <div class="entry">
+                <label for="passOneSignup">Password: </label>
+                <input id="passOneSignup" name="passOne" type="password">
+            </div>
+            <div class="entry">
+                <label for="passTwoSignup">Retype Password: </label>
+                <input id="passTwoSignup" name="passTwo" type="password">
+            </div>
+            <p class="error"></p>
+            <div class="submission">
+                <input id="signupSubmit" type="submit" value="Signup">
+                <a href="./ToDoLogin.html"> Login </a>
+            </div>
+        </form>
+</body>
+</html>

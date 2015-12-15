@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+      <title>Backend Login</title>
+      <meta charset="UTF-8">
+	  <meta name="robots" content="noindex" />
+      <link rel="stylesheet" type="text/css" href="nice.css">
+      
+      <script>
+      
+        function handleError(error, message) {
+            setTimeout(function() {
+                error.textContent = message;
+            }, 200);
+        }
+      
+        function handleLogin(LoginForm) {
+            var username = loginForm.querySelector("input[name=username]");
+            var passOne = loginForm.querySelector("input[name=passOne]");
+            var error = loginForm.querySelector(".error");
+			
+			error.testContent = "";
+			
+			if(!username.value || username.value == "" ||
+				!passOne.value || passOne.value == ""){
+				handleError(error, "Both username and password are required");
+				return false;
+			}
+			
+			Parse.User.logIn(username.value, passOne.value, {
+				success: function(user){
+					window.location.href = "./ToDoMain.html";
+				},
+				error: function(user, errorRes){
+					handleError(error, "Incorrect Login");
+				}
+			});
+            
+        }
+
+        function init() {
+            var loginForm = document.querySelector("#loginForm");
+            var loginSubmit = document.querySelector("#loginSubmit");
+            
+            Parse.initialize("j98M3FFiX4SE5AMkVMemB3Hx3MRMsYsoOOVPU9E4", "ClttYScbdV99VRVQKc3GgaD41KG95Iiq0TEUabGn");
+			
+			var currentUser = Parse.User.current();
+			if(currentUser){
+				window.location.href="./ToDoMain.html";
+			}
+			
+			loginSubmit.addEventListener("click", function(e){
+				handleLogin(loginForm);
+				e.preventDefault();
+				return false;
+			});
+        }
+      
+        window.onload = init;
+      </script>
+</head>
+<body>
+    <section id="content">
+        <form class="main" id="loginForm" action="#" method="POST">
+            <h2>Blog Entrance</h2>
+            
+            <div class="entry">
+                <label for="usernameLogin">Username: </label>
+                <input id="usernameLogin" name="username" type="text">
+            </div>
+            <div class="entry">
+                <label for="passOneLogin">Password: </label>
+                <input id="passOneLogin" name="passOne" type="password">
+            </div>
+            <p class="error"></p>
+            <div class="submission">
+                <input id="loginSubmit" type="submit" value="Login">
+            </div>
+        </form>
+    </section>
+</body>
+</html>

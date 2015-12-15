@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+	  <script>
+	  //check if user is logged in. Else send him to login.
+	  Parse.initialize("j98M3FFiX4SE5AMkVMemB3Hx3MRMsYsoOOVPU9E4", "ClttYScbdV99VRVQKc3GgaD41KG95Iiq0TEUabGn");
+			
+		var currentUser = Parse.User.current();
+		if(!currentUser) {
+			window.location.href = "./index.html";
+		}
+	  </script>
+      <title>Upload Pics</title>
+      <meta charset="UTF-8">
+	  <meta name="robots" content="noindex" />
+      <link rel="stylesheet" type="text/css" href="nice.css">
+      
+      <script>
+
+      
+        window.onload = init;
+      </script>
+</head>
+<body>
+
+</body>
+</html>
