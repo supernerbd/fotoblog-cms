@@ -5,9 +5,10 @@
       <title>Create User</title>
       <meta charset="UTF-8">
 	  <meta name="robots" content="noindex" />
-      <link rel="stylesheet" type="text/css" href="ToDoApp.css">
+      <link rel="stylesheet" type="text/css" href="nice.css">
       
       <script>
+	  "use strict";
         function handleError(error, message) {
             setTimeout(function() {
                 error.textContent = message;
@@ -16,6 +17,7 @@
         
         function handleSignup(signupForm) {
             var username = signupForm.querySelector("input[name=username]");
+			var email = signupForm.querySelector("input[name=email]");
             var passOne = signupForm.querySelector("input[name=passOne]");
             var passTwo = signupForm.querySelector("input[name=passTwo]");
             var error = signupForm.querySelector(".error");
@@ -36,12 +38,13 @@
 			}
 			
 			var user = new Parse.User();
-			user.set("username", username.value);
-			user.set("password", passOne.value);
+			user.setUsername(username.value);
+			user.setEmail(email.value);
+			user.setPassword(passOne.value);
 			
 			user.signUp(null, {
 				success: function(user){
-					window.location.href = "./ToDoMain.html";
+					window.location.href = "../backend/backend.html";
 				},
 				error: function(user, errorRes){
 					if(errorRes.code === Parse.Error.USERNAME_TAKEN){
@@ -84,6 +87,10 @@
                 <label for="usernameSignup">Username: </label>
                 <input id="usernameSignup" name="username" type="text">
             </div>
+			<div class="entry">
+                <label for="email">email: </label>
+                <input id="email" name="email" type="text">
+            </div>
             <div class="entry">
                 <label for="passOneSignup">Password: </label>
                 <input id="passOneSignup" name="passOne" type="password">
@@ -95,7 +102,6 @@
             <p class="error"></p>
             <div class="submission">
                 <input id="signupSubmit" type="submit" value="Signup">
-                <a href="./ToDoLogin.html"> Login </a>
             </div>
         </form>
 </body>

@@ -8,7 +8,7 @@
       <link rel="stylesheet" type="text/css" href="nice.css">
       
       <script>
-      
+		"use strict";
         function handleError(error, message) {
             setTimeout(function() {
                 error.textContent = message;
@@ -47,7 +47,7 @@
 			
 			var currentUser = Parse.User.current();
 			if(currentUser){
-				window.location.href="./ToDoMain.html";
+				window.location.href="./backend.html";
 			}
 			
 			loginSubmit.addEventListener("click", function(e){
