@@ -30,7 +30,7 @@
 			
 			Parse.User.logIn(username.value, passOne.value, {
 				success: function(user){
-					window.location.href = "./ToDoMain.html";
+					window.location.href = "./backend.html";
 				},
 				error: function(user, errorRes){
 					handleError(error, "Incorrect Login");

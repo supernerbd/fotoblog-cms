@@ -22,9 +22,23 @@
 	  <script src="js/load-image-exif-map.js"></script>
       <script>
 	  (function(){
+		//vars
+		var picture;
+		var statusNr;
+		var statusObj;
 		function init(){//init all modules
 			//init parse uploading code
-			
+			//get status 
+			var status = new Parse.Query("status");
+			status.get("GG65Rs42Zk",{
+				success: function(results) {
+					statusNr = results.attributes.nr;
+					statusObj = results;
+				},
+				error: function(result){
+					console.log("error" + results);
+				}
+			});
 			//init preview and exif code
 			
 			//hook up event listeners
@@ -34,8 +48,9 @@
 			}
 			//Select
 			document.querySelector("#imageFile").onchange = function (e) {
+				picture = e.target.files[0]; //save pic in var
 				var loadingImage = loadImage( //load image on screen
-					e.target.files[0],
+					picture,
 					function (img) {
 						document.querySelector("#workframe").appendChild(img);
 						document.querySelector("#imageFile").disabled = true;
@@ -46,7 +61,7 @@
 					// Alternative code ...
 				}
 				loadImage.parseMetaData( //load exif data in form
-					e.target.files[0],
+					picture,
 					function (data) {
 						if(!data.exif){
 							//handle error!
@@ -69,6 +84,42 @@
 							document.querySelector("#Model").value = exif.Model;
 						}
 				});
+			}
+			//Upload
+			document.querySelector("#upload").onclick = function (e) {
+				if(picture){
+					//write data into obj
+					var Pic = Parse.Object.extend("pic");
+					var pic = new Pic();
+					console.log(statusNr);
+					pic.set("photographer", document.querySelector("#photographer").value);
+					pic.set("location", document.querySelector("#location").value);
+					pic.set("FNumber", document.querySelector("#FNumber").value);
+					pic.set("ExposureTime", document.querySelector("#ExposureTime").value);
+					pic.set("FocalLength", document.querySelector("#FocalLength").value);
+					pic.set("PhotographicSensitivity", document.querySelector("#PhotographicSensitivity").value);
+					pic.set("Make", document.querySelector("#Make").value);
+					pic.set("Model", document.querySelector("#Model").value);
+					pic.set("nr", statusNr); //give pic number
+					//upload pic
+					var name = "blog"+statusNr+".jpg";
+					var parseFile = new Parse.File(name, picture);
+					parseFile.save().then(function() {
+						// The file has been saved to Parse. Store Data now.
+						pic.set("file", parseFile);
+						pic.save();
+						//increment status nr
+						statusObj.increment("nr");
+						statusObj.save();
+						//reload
+						alert("Uploaded Successfully");
+						document.location.reload(true);
+						}, function(error) {
+						// The file either could not be read, or could not be saved to Parse.
+						console.log("error:" + error);
+						alert("File to big?");
+					});
+				}
 			}
 		};
       
