@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "_default": {
+      "link": "onedoteight"
+    },
+    "onedoteight": {
+      "applicationId": "j98M3FFiX4SE5AMkVMemB3Hx3MRMsYsoOOVPU9E4"
+    }
+  }
+}

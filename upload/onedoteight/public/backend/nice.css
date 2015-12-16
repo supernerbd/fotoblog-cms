@@ -1,0 +1,16 @@
+#content{
+	margin-left: 45%;
+	background-color: grey;
+	width: 200px;
+	padding: 20px; 
+	text-align: center;
+}
+*{
+	text-align: center;
+}
+.main{
+	width: 200px;
+	text-align: center;
+	float: right;
+	margin-right: 50px;
+}
