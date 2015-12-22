@@ -1,3 +1,99 @@
-index.html
-app id: j98M3FFiX4SE5AMkVMemB3Hx3MRMsYsoOOVPU9E4
-js api id: ClttYScbdV99VRVQKc3GgaD41KG95Iiq0TEUabGn
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+      <title>Onedoteight</title>
+      <meta charset="UTF-8">
+      <link rel="stylesheet" type="text/css" href="style.css">
+	  <script>
+	  (function(){
+		//init parse
+			Parse.initialize("j98M3FFiX4SE5AMkVMemB3Hx3MRMsYsoOOVPU9E4", "ClttYScbdV99VRVQKc3GgaD41KG95Iiq0TEUabGn");
+		//vars
+		var statusNr; //numbers of pics stored
+		var currentPic;
+		//functions
+		function init(){
+		console.log(statusNr);
+
+			//check which pics to load (GET URL)
+			if(document.location.search){
+				//handle id
+			}
+			else{
+				currentPic = statusNr; //newest Pic is first
+			}
+			//load pics into gallery
+			
+			//show:
+			document.querySelector("#loading").style.display = "none";
+			//event listener
+			var i = null;
+			$("body").mousemove(function() {
+				clearTimeout(i);
+				$("#control").fadeIn(100);
+				$("#header").fadeIn(100);
+				i = setTimeout(function () {
+					$("#control").fadeOut(100);
+					$("#header").fadeOut(100);
+				}, 4000);
+			}).mouseleave(function() {
+				clearTimeout(i);
+				$("#control").fadeOut(100); 
+				$("#header").fadeOut(100);				
+			});
+		};
+					
+		function getEqualTo(table, key, value, code){ //make equalTo request to Parse
+			var result="some";
+			var query = new Parse.Query(table);
+			query.equalTo(key, value);
+			query.find({
+				success: function(results) {
+					code(results);
+				},
+				error: function(results){
+					console.log("error " + results + ".Searching for "+ key + " in " + value + " in class" + table);
+				}
+			});
+		};
+		
+		function getStatus(code){
+			var status = new Parse.Query("status");
+			status.get("GG65Rs42Zk",{
+				success: function(results) {
+					statusNr = results.attributes.nr;
+					code();
+				},
+				error: function(result){
+					console.log("error" + results);
+				}
+			});
+		};
+		  
+		window.onload = getStatus(init);
+	  }());
+	  </script>
+</head>
+<body>
+	<div id="loading"> <h1>Loading ...</h1>
+	</div>
+	<script>
+		//making loading screen 100% of viewport
+		document.querySelector("#loading").style.height=window.innerHeight+"px";
+		document.querySelector("#loading").style.width=window.innerWidth+"px";
+	</script>
+	<div id="header">
+		<p>Logo 
+		Permalink</p>
+	</div>
+	<div id="content">
+		
+	</div>
+	<div id="control">
+		<p>Controls 
+		Details</p>
+	<div>
+</body>
+</html>
