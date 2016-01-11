@@ -17,13 +17,28 @@
 		var currentPic;
 		var img = [];
 		var pause = false;
+		var pathname;
 		//functions
 		function init(){
 		console.log(statusNr);
-
+			//init vars
+			pathname=document.location.pathname;
 			//check which pics to load (GET URL)
 			if(document.location.search){
 				//handle id
+				var query = parseURLQuery(document.location.search);
+				if(query.id){
+					if(query.id>=statusNr){//pic nr to high
+						$("#loading").html("<img src='material/logo.png' alt='Logo' /><h1>Picture not availabel. You will be redirected to our latest picture.</h1>");
+						setTimeout(function () {document.location=pathname;}, 3000);
+					}
+				console.log(query.id);
+					currentPic = parseInt(query.id, 10);
+					console.log(currentPic);
+				}
+				else{
+					currentPic = statusNr-1;
+				}
 			}
 			else{
 				currentPic = statusNr-1; //newest Pic is first, - 1 because statusNr refers for backend to next pics number
@@ -143,7 +158,8 @@
 			$("#ExposureTime").html(img[nr].attributes.ExposureTime);
 			$("#FNumber").html(img[nr].attributes.FNumber);
 			$("#PhotographicSensitivity").html(img[nr].attributes.PhotographicSensitivity);
-		};
+			document.querySelector("#path").value = pathname + "?id=" + nr;
+ 		};
 		function getfirstPic(nr){
 			if(img[nr]){
 				//shouldnt happen here!?
@@ -190,6 +206,16 @@
 				}
 			});
 		};
+		
+		function parseURLQuery(qstr) { //from: http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
+			var query = {};
+			var a = qstr.substr(1).split('&');
+			for (var i = 0; i < a.length; i++) {
+				var b = a[i].split('=');
+				query[decodeURIComponent(b[0])] = decodeURIComponent(b[1] || '');
+			}
+			return query;
+		};
 		  
 		window.onload = getStatus(init);
 	  }());
@@ -207,7 +233,7 @@
 	</script>
 	<div id="header">
 		<img src="material/logo.png" alt="Logo" /> 
-		<div><h2> Permalink: </h2> <input type="text" readonly /></div>
+		<div><h2> Permalink: </h2> <input id="path" type="text" readonly /></div>
 		<a href="about.html"><h2>About</h2></a>
 	</div>
 	<div id="content">

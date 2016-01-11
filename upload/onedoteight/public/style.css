@@ -19,7 +19,7 @@ a:visited{
 	text-decoration: none;
 }
 #loading{
-		background-color: #e5f5ff;
+		background-color: #009cff;
 		z-index: 2;
 		text-align: center;
 		vertical-align: bottom;
@@ -57,7 +57,7 @@ h2{
 		left: 0;
 		height: 8%;
 		width: 100%;
-		background-color: #e5f5ff;
+		background-color: #009cff;
 		z-index: 1;
 	}
 	#header img{
@@ -78,7 +78,7 @@ h2{
 		left: 10%;
 		height: 10%;
 		width: 80%;
-		background-color: #e5f5ff;
+		background-color: #009cff;
 		z-index: 1;
 		border-radius: 20px;
 	}
@@ -117,12 +117,12 @@ h2{
 		background-color: #4dbaff;
 	}
 	.cTwo{
-		background-color: #009cff;
+		background-color: #0040ff;
 	}
 	input{
-		color:  #4dbaff;
-		background-color: #e5f5ff;
-		border: 2px solid #009cff;
+		color:  #0040ff;
+		background-color: #4dbaff;
+		border: 2px solid #4dbaff;
 		width: 120%;
 	}
 }
@@ -134,7 +134,7 @@ h2{
 		left: 0;
 		height: 8%;
 		width: 100%;
-		background-color: #e5f5ff;
+		background-color: #009cff;
 		z-index: 1;
 	}
 	#header img{
@@ -155,11 +155,14 @@ h2{
 		left: 0;
 		height: 10%;
 		width: 100%;
-		background-color: #e5f5ff;
+		background-color: #009cff;
 		z-index: 1;
 	}
-	#next, #prev, #pause{ /*set controls to center*/
+	#next, #prev, #pause{ 
 		float: left;
+	}
+	#prev{
+		padding-left: 35%;/*set controls to center*/
 	}
 	#next img{
 		width: 90px;
@@ -174,9 +177,9 @@ h2{
 		display: none;
 	}
 	input{
-		color:  #4dbaff;
-		background-color: #e5f5ff;
-		border: 2px solid #009cff;
+		color:  #0040ff;
+		background-color: #4dbaff;
+		border: 2px solid #4dbaff;
 		width: 100%;
 	}
 }
