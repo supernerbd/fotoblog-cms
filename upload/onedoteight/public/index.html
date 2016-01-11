@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	  <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
       <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
       <title>Onedoteight</title>
       <meta charset="UTF-8">
       <link rel="stylesheet" type="text/css" href="style.css">
 	  <script>
-	  (function(){
+	  "use strict";
+	  (function(){ //font: quick sand regular
 		//init parse
 			Parse.initialize("j98M3FFiX4SE5AMkVMemB3Hx3MRMsYsoOOVPU9E4", "ClttYScbdV99VRVQKc3GgaD41KG95Iiq0TEUabGn");
 		//vars
 		var statusNr; //numbers of pics stored
 		var currentPic;
+		var img = [];
+		var pause = false;
 		//functions
 		function init(){
 		console.log(statusNr);
@@ -22,29 +26,144 @@
 				//handle id
 			}
 			else{
-				currentPic = statusNr; //newest Pic is first
+				currentPic = statusNr-1; //newest Pic is first, - 1 because statusNr refers for backend to next pics number
 			}
-			//load pics into gallery
-			
-			//show:
-			document.querySelector("#loading").style.display = "none";
+			//load pics into page
+			getfirstPic(currentPic);
+			getPic(currentPic+1);
+			getPic(currentPic+2);
+			getPic(currentPic-1);
+			getPic(currentPic-2);
+			//start gallery
+			setTimeout(gallery, 10000);
 			//event listener
-			var i = null;
-			$("body").mousemove(function() {
-				clearTimeout(i);
+			var timer = null;
+			$("body").mousemove(function() { //mousemove/Ui handler
+				clearTimeout(timer);
 				$("#control").fadeIn(100);
 				$("#header").fadeIn(100);
-				i = setTimeout(function () {
+				timer = setTimeout(function () {
 					$("#control").fadeOut(100);
 					$("#header").fadeOut(100);
 				}, 4000);
 			}).mouseleave(function() {
-				clearTimeout(i);
+				clearTimeout(timer);
 				$("#control").fadeOut(100); 
 				$("#header").fadeOut(100);				
 			});
+			/*$("#control").mouseover(function(){ //mousemove on body triggers also. Thats why it still times out. Solution unknown todate.
+				clearTimeout(timer);
+			});
+			$("#header").mouseover(function(){
+				clearTimeout(timer);
+			});*/
+			//next button, last button, pause button, key events
+			$("#next").click(function() {
+				nextPic();
+				galleryPause();
+			});
+			$("#prev").click(function() {
+				prevPic();
+				galleryPause();
+			});
+			$("#pause").click(function() {
+				if(pause){
+					galleryUnPause();
+				}
+				else{
+					galleryPause();
+				}
+			});
 		};
-					
+		//initUI with call to getPics(use equal to) for first pic. Calls for last two and next two pics through init and getPics()
+		
+		function gallery(){
+			if(!pause){
+				nextPic();
+				setTimeout(gallery, 10000);
+			}
+			else{
+				return;
+			}
+		};
+		function galleryPause(){
+			pause=true;
+			clearTimeout(gallery)
+		};
+		function galleryUnPause(){
+			pause=false;
+			setTimeout(gallery, 5000);
+		};
+		function nextPic(){
+			currentPic --;
+			if(currentPic<=0){
+				currentPic=statusNr-1;
+			}
+			$("#content").css("background-image", "url("+img[currentPic].pic.src+")");
+			loadInfo(currentPic);
+			getPic(currentPic-1);
+			getPic(currentPic-2);
+		};
+		function prevPic(){
+			currentPic ++;
+			if (currentPic>=statusNr){
+				currentPic=1;
+			}
+			$("#content").css("background-image", "url("+img[currentPic].pic.src+")");
+			loadInfo(currentPic);
+			getPic(currentPic+1);
+			getPic(currentPic+2);
+		};
+		function getPic(nr){
+			if(nr>=statusNr){
+				nr -= statusNr;
+			}
+			if(nr<=0){
+				nr=statusNr-1;
+			}
+			//console.log(nr);
+			if(img[nr]){
+				//pic exists in array, just show
+				return;
+			}
+			else{
+				getEqualTo("pic", "nr", nr, function(results){
+					img[results[0].attributes.nr] = {};
+					img[results[0].attributes.nr].pic = new Image;
+					img[results[0].attributes.nr].pic.src = results[0].attributes.file._url;
+					img[results[0].attributes.nr].attributes = results[0].attributes;
+				});
+			}
+		};
+		function loadInfo(nr){
+			$("#photographer").html(img[nr].attributes.photographer);
+			$("#location").html(img[nr].attributes.location);
+			$("#camera").html(img[nr].attributes.Make + " " + img[nr].attributes.Model);
+			$("#FocalLength").html(img[nr].attributes.FocalLength);
+			$("#ExposureTime").html(img[nr].attributes.ExposureTime);
+			$("#FNumber").html(img[nr].attributes.FNumber);
+			$("#PhotographicSensitivity").html(img[nr].attributes.PhotographicSensitivity);
+		};
+		function getfirstPic(nr){
+			if(img[nr]){
+				//shouldnt happen here!?
+				$("#content").css("background-image", "url("+img[nr].pic.src+")");
+				document.querySelector("#loading").style.display = "none";
+				return;
+			}
+			else{
+				getEqualTo("pic", "nr", nr, function(results){
+					img[results[0].attributes.nr] = {};
+					img[results[0].attributes.nr].pic = new Image;
+					img[results[0].attributes.nr].pic.src = results[0].attributes.file._url;
+					img[results[0].attributes.nr].attributes = results[0].attributes;
+					$("#content").css("background-image", "url("+img[nr].pic.src+")");
+					loadInfo(currentPic);
+					document.querySelector("#loading").style.display = "none";
+				});
+			}
+		};
+		
 		function getEqualTo(table, key, value, code){ //make equalTo request to Parse
 			var result="some";
 			var query = new Parse.Query(table);
@@ -77,23 +196,38 @@
 	  </script>
 </head>
 <body>
-	<div id="loading"> <h1>Loading ...</h1>
+	<div id="loading">
+		<img src="material/logo.png" alt="Logo" />
+		<h1>Loading ...</h1>
 	</div>
 	<script>
 		//making loading screen 100% of viewport
-		document.querySelector("#loading").style.height=window.innerHeight+"px";
-		document.querySelector("#loading").style.width=window.innerWidth+"px";
+		//document.querySelector("#loading").style.height=window.innerHeight+"px";
+		//document.querySelector("#loading").style.width=window.innerWidth+"px";
 	</script>
 	<div id="header">
-		<p>Logo 
-		Permalink</p>
+		<img src="material/logo.png" alt="Logo" /> 
+		<div><h2> Permalink: </h2> <input type="text" readonly /></div>
+		<a href="about.html"><h2>About</h2></a>
 	</div>
 	<div id="content">
 		
 	</div>
 	<div id="control">
-		<p>Controls 
-		Details</p>
+		<div id="prev">
+		<img src="material/previous.png" alt="Previous" />
+		</div>
+		<div id="pause">
+		<img src="material/pause.png" alt="Pause" />
+		</div>
+		<div id="next">
+		<img src="material/next.png" alt="Next" />
+		</div>
+		<div id="info">
+			<table>
+				<tr><th>Photo by</th><th>Location</th><th>Camera</th><th>Focal Length</th><th>Time</th><th>F</th><th>ISO</th></tr>
+				<tr><td id="photographer" class="cOne"> </td><td id="location" class="cTwo"> </td><td id="camera" class="cOne"> </td><td id="FocalLength" class="cTwo"> </td><td id="ExposureTime" class="cOne"> </td><td id="FNumber" class="cTwo"> </td><td id="PhotographicSensitivity" class="cOne"> </td><tr>
+			</table>
+		</div>
 	<div>
-</body>
 </html>
