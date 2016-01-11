@@ -22,7 +22,7 @@
 		function init(){
 		console.log(statusNr);
 			//init vars
-			pathname=document.location.pathname;
+			pathname=document.location.origin;
 			//check which pics to load (GET URL)
 			if(document.location.search){
 				//handle id
@@ -50,7 +50,9 @@
 			getPic(currentPic-1);
 			getPic(currentPic-2);
 			//start gallery
-			setTimeout(gallery, 10000);
+			if(!query){
+				setTimeout(gallery, 10000);
+			}
 			//event listener
 			var timer = null;
 			$("body").mousemove(function() { //mousemove/Ui handler
@@ -158,7 +160,7 @@
 			$("#ExposureTime").html(img[nr].attributes.ExposureTime);
 			$("#FNumber").html(img[nr].attributes.FNumber);
 			$("#PhotographicSensitivity").html(img[nr].attributes.PhotographicSensitivity);
-			document.querySelector("#path").value = pathname + "?id=" + nr;
+			document.querySelector("#path").value = pathname + "/?id=" + nr;
  		};
 		function getfirstPic(nr){
 			if(img[nr]){
