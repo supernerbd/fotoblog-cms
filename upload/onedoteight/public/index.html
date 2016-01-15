@@ -7,7 +7,7 @@
       <title>Onedoteight</title>
       <meta charset="UTF-8">
       <link rel="stylesheet" type="text/css" href="style.css">
-	  <script>
+	  <script> //todo: key events, changing pic resolutions, two way authorisation, comment code.
 	  "use strict";
 	  (function(){ //font: quick sand regular
 		//init parse
@@ -29,7 +29,7 @@
 				var query = parseURLQuery(document.location.search);
 				if(query.id){
 					if(query.id>=statusNr){//pic nr to high
-						$("#loading").html("<img src='material/logo.png' alt='Logo' /><h1>Picture not availabel. You will be redirected to our latest picture.</h1>");
+						$("#loading").html("<img src='material/logo.png' alt='Logo' /><h1>Picture not available. You will be redirected to our latest picture.</h1>");
 						setTimeout(function () {document.location=pathname;}, 3000);
 					}
 				console.log(query.id);
@@ -228,11 +228,6 @@
 		<img src="material/logo.png" alt="Logo" />
 		<h1>Loading ...</h1>
 	</div>
-	<script>
-		//making loading screen 100% of viewport
-		//document.querySelector("#loading").style.height=window.innerHeight+"px";
-		//document.querySelector("#loading").style.width=window.innerWidth+"px";
-	</script>
 	<div id="header">
 		<img src="material/logo.png" alt="Logo" /> 
 		<div><h2> Permalink: </h2> <input id="path" type="text" readonly /></div>
