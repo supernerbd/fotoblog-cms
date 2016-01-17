@@ -18,10 +18,18 @@
 		var img = []; //array with all loaded pictures and metadata
 		var pause = false; //is gallery paused?
 		var pathname; //current url
+		var fileSmall;
 		//functions
 		function init(){ //init app
 			//init vars
 			pathname=document.location.origin;
+			//check innerWidth
+			if(window.innerWidth<1000){
+				fileSmall=true;
+			}
+			else{
+				fileSmall=false;
+			}
 			//check which pics to load (GET URL)
 			if(document.location.search){
 				//handle id
@@ -92,7 +100,7 @@
 			});
 			$("body").keyup(function() {
 				if(event.keyCode===39){ //next
-					prevPic();
+					nextPic();
 					galleryPause();
 				}
 				if(event.keyCode===37){ //prev
@@ -163,7 +171,17 @@
 				getEqualTo("pic", "nr", nr, function(results){
 					img[results[0].attributes.nr] = {};
 					img[results[0].attributes.nr].pic = new Image;
-					img[results[0].attributes.nr].pic.src = results[0].attributes.file._url;
+					if(fileSmall){
+						if(results[0].attributes.fileSmall){
+							img[results[0].attributes.nr].pic.src = results[0].attributes.fileSmall._url;
+						}
+						else{
+							img[results[0].attributes.nr].pic.src = results[0].attributes.file._url;
+						}
+					}
+					else{
+						img[results[0].attributes.nr].pic.src = results[0].attributes.file._url; //!
+					}
 					img[results[0].attributes.nr].attributes = results[0].attributes;
 				});
 			}
@@ -189,7 +207,17 @@
 				getEqualTo("pic", "nr", nr, function(results){
 					img[results[0].attributes.nr] = {};
 					img[results[0].attributes.nr].pic = new Image;
-					img[results[0].attributes.nr].pic.src = results[0].attributes.file._url;
+					if(fileSmall){
+						if(results[0].attributes.fileSmall){
+							img[results[0].attributes.nr].pic.src = results[0].attributes.fileSmall._url;
+						}
+						else{
+							img[results[0].attributes.nr].pic.src = results[0].attributes.file._url;
+						}
+					}
+					else{
+						img[results[0].attributes.nr].pic.src = results[0].attributes.file._url; //!
+					}
 					img[results[0].attributes.nr].attributes = results[0].attributes;
 					$("#content").css("background-image", "url("+img[nr].pic.src+")");
 					loadInfo(currentPic);

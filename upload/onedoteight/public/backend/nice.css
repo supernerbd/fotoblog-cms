@@ -14,3 +14,13 @@
 	float: right;
 	margin-right: 50px;
 }
+#uploadDiv{
+	position: fixed;
+	top: 40%;
+	left: 40%;
+	width: 20%;
+	height: 20%;
+	background-color: white;
+	z-index: 2;
+	display: none;
+}
