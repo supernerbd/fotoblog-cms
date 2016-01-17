@@ -72,6 +72,19 @@ h2{
 		float: left;
 		padding-left: 15%;
 	}
+	#logo{
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 8%;
+		width: 100%;
+		background-color: rgba(0,0,0,0,0);
+		z-index: 1;
+	}
+	#logo img{
+		height: 100%;
+		float: left;
+	}
 	#control{
 		position: fixed;
 		top: 85%;
@@ -118,6 +131,11 @@ h2{
 		width: 120%;
 	}
 }
+@media screen and (max-height: 950px){ /*smal desktop*/
+	#control{
+		height: 15%;
+	}
+}
 	/*Smartphone*/
 @media screen and (max-width: 1200px){
 	#header{
@@ -140,6 +158,19 @@ h2{
 	#header div{
 		float: left;
 		padding-left: 15%;
+	}
+	#logo{
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 8%;
+		width: 100%;
+		background-color: rgba(0,0,0,0,0);
+		z-index: 1;
+	}
+	#logo img{
+		height: 100%;
+		float: left;
 	}
 	#control{
 		position: fixed;
