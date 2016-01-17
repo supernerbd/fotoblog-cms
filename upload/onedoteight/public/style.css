@@ -15,7 +15,7 @@ a:hover{
 	text-decoration: none;
 }
 a:visited{
-	color: #009cff;
+	color: black;
 	text-decoration: none;
 }
 #loading{
@@ -82,15 +82,7 @@ h2{
 		z-index: 1;
 		border-radius: 20px;
 	}
-	#next{
-		float: left;
-		padding: 10px;
-	}
-	#prev{
-		float: left;
-		padding: 10px;
-	}
-	#pause{
+	#next, #prev, #divPause{ 
 		float: left;
 		padding: 10px;
 	}
@@ -100,7 +92,7 @@ h2{
 	#prev img{
 		width: 80px;
 	}
-	#pause img{
+	#divPause img{
 		width: 80px;
 	}
 	table, th, td{
@@ -111,16 +103,16 @@ h2{
 		padding-left: 10%;
 	}
 	th{
-		background-color: white;
+		background-color: #b3e1ff;
 	}
 	.cOne{
 		background-color: #4dbaff;
 	}
 	.cTwo{
-		background-color: #0040ff;
+		background-color: #b3e1ff;
 	}
 	input{
-		color:  #0040ff;
+		color:  #b3e1ff;
 		background-color: #4dbaff;
 		border: 2px solid #4dbaff;
 		width: 120%;
@@ -151,18 +143,25 @@ h2{
 	}
 	#control{
 		position: fixed;
-		top: 90%;
+		top: 88%;
 		left: 0;
-		height: 10%;
+		height: 12%;
 		width: 100%;
 		background-color: #009cff;
 		z-index: 1;
 	}
-	#next, #prev, #pause{ 
-		float: left;
+	#next{
+		float: right;
+		padding: 10px;
 	}
 	#prev{
-		padding-left: 35%;/*set controls to center*/
+		float: left;
+		padding: 10px;
+	}
+	#divPause{
+		float: left;
+		padding: 10px;
+		padding-left: 30%;
 	}
 	#next img{
 		width: 90px;
@@ -170,14 +169,14 @@ h2{
 	#prev img{
 		width: 90px;
 	}
-	#pause img{
+	#divPause img{
 		width: 90px;
 	}
 	table, th, td{
 		display: none;
 	}
 	input{
-		color:  #0040ff;
+		color:  #b3e1ff;
 		background-color: #4dbaff;
 		border: 2px solid #4dbaff;
 		width: 100%;

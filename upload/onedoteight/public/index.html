@@ -7,20 +7,19 @@
       <title>Onedoteight</title>
       <meta charset="UTF-8">
       <link rel="stylesheet" type="text/css" href="style.css">
-	  <script> //todo: key events, changing pic resolutions, two way authorisation, comment code.
+	  <script> 
 	  "use strict";
 	  (function(){ //font: quick sand regular
 		//init parse
 			Parse.initialize("j98M3FFiX4SE5AMkVMemB3Hx3MRMsYsoOOVPU9E4", "ClttYScbdV99VRVQKc3GgaD41KG95Iiq0TEUabGn");
 		//vars
 		var statusNr; //numbers of pics stored
-		var currentPic;
-		var img = [];
-		var pause = false;
-		var pathname;
+		var currentPic; //current pic displayed
+		var img = []; //array with all loaded pictures and metadata
+		var pause = false; //is gallery paused?
+		var pathname; //current url
 		//functions
-		function init(){
-		console.log(statusNr);
+		function init(){ //init app
 			//init vars
 			pathname=document.location.origin;
 			//check which pics to load (GET URL)
@@ -74,7 +73,7 @@
 			$("#header").mouseover(function(){
 				clearTimeout(timer);
 			});*/
-			//next button, last button, pause button, key events
+			//next button, prev button, pause button, key events
 			$("#next").click(function() {
 				nextPic();
 				galleryPause();
@@ -83,7 +82,7 @@
 				prevPic();
 				galleryPause();
 			});
-			$("#pause").click(function() {
+			$("#divPause").click(function() {
 				if(pause){
 					galleryUnPause();
 				}
@@ -91,10 +90,27 @@
 					galleryPause();
 				}
 			});
+			$("body").keyup(function() {
+				if(event.keyCode===39){ //next
+					prevPic();
+					galleryPause();
+				}
+				if(event.keyCode===37){ //prev
+					prevPic();
+					galleryPause();
+				}
+				if(event.keyCode===32||event.keyCode===13){ //pause
+					if(pause){
+					galleryUnPause();
+					}
+					else{
+						galleryPause();
+					}
+				}
+			});
 		};
-		//initUI with call to getPics(use equal to) for first pic. Calls for last two and next two pics through init and getPics()
 		
-		function gallery(){
+		function gallery(){ //start gallery
 			if(!pause){
 				nextPic();
 				setTimeout(gallery, 10000);
@@ -103,15 +119,15 @@
 				return;
 			}
 		};
-		function galleryPause(){
+		function galleryPause(){ //pause gallery
 			pause=true;
 			clearTimeout(gallery)
 		};
-		function galleryUnPause(){
+		function galleryUnPause(){ //unpause gallery
 			pause=false;
 			setTimeout(gallery, 5000);
 		};
-		function nextPic(){
+		function nextPic(){ //trigger to load next pic
 			currentPic --;
 			if(currentPic<=0){
 				currentPic=statusNr-1;
@@ -121,7 +137,7 @@
 			getPic(currentPic-1);
 			getPic(currentPic-2);
 		};
-		function prevPic(){
+		function prevPic(){ //trigger to load prev pic
 			currentPic ++;
 			if (currentPic>=statusNr){
 				currentPic=1;
@@ -131,7 +147,7 @@
 			getPic(currentPic+1);
 			getPic(currentPic+2);
 		};
-		function getPic(nr){
+		function getPic(nr){ //load Pic and information from Parse
 			if(nr>=statusNr){
 				nr -= statusNr;
 			}
@@ -152,7 +168,7 @@
 				});
 			}
 		};
-		function loadInfo(nr){
+		function loadInfo(nr){ //load info of pic into the website
 			$("#photographer").html(img[nr].attributes.photographer);
 			$("#location").html(img[nr].attributes.location);
 			$("#camera").html(img[nr].attributes.Make + " " + img[nr].attributes.Model);
@@ -162,7 +178,7 @@
 			$("#PhotographicSensitivity").html(img[nr].attributes.PhotographicSensitivity);
 			document.querySelector("#path").value = pathname + "/?id=" + nr;
  		};
-		function getfirstPic(nr){
+		function getfirstPic(nr){ //special case to load Pic on init
 			if(img[nr]){
 				//shouldnt happen here!?
 				$("#content").css("background-image", "url("+img[nr].pic.src+")");
@@ -196,7 +212,7 @@
 			});
 		};
 		
-		function getStatus(code){
+		function getStatus(code){ //get Status code from parse and init app
 			var status = new Parse.Query("status");
 			status.get("GG65Rs42Zk",{
 				success: function(results) {
@@ -219,7 +235,7 @@
 			return query;
 		};
 		  
-		window.onload = getStatus(init);
+		window.onload = getStatus(init); //start app
 	  }());
 	  </script>
 </head>
@@ -230,7 +246,7 @@
 	</div>
 	<div id="header">
 		<img src="material/logo.png" alt="Logo" /> 
-		<div><h2> Permalink: </h2> <input id="path" type="text" readonly /></div>
+		<div><a href="#" title="Permanent link to this picture"><h2> Permalink: </h2> <input id="path" type="text" readonly /></a></div>
 		<a href="about.html"><h2>About</h2></a>
 	</div>
 	<div id="content">
@@ -238,13 +254,13 @@
 	</div>
 	<div id="control">
 		<div id="prev">
-		<img src="material/previous.png" alt="Previous" />
+		<a href="#" title="Previous"><img src="material/previous.png" alt="Previous" /></a>
 		</div>
-		<div id="pause">
-		<img src="material/pause.png" alt="Pause" />
+		<div id="divPause">
+		<a href="#" title="Pause/Play"> <img src="material/play.png" alt="Play" id="play" /> </a>
 		</div>
 		<div id="next">
-		<img src="material/next.png" alt="Next" />
+		<a href="#" title="Next"><img src="material/next.png" alt="Next" /> </a>
 		</div>
 		<div id="info">
 			<table>
