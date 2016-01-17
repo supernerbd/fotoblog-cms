@@ -109,7 +109,7 @@
 				}
 				if(event.keyCode===32||event.keyCode===13){ //pause
 					if(pause){
-					galleryUnPause();
+						galleryUnPause();
 					}
 					else{
 						galleryPause();
@@ -129,11 +129,13 @@
 		};
 		function galleryPause(){ //pause gallery
 			pause=true;
-			clearTimeout(gallery)
+			clearTimeout(gallery);
+			document.querySelector("#play").src = "material/play.png";
 		};
 		function galleryUnPause(){ //unpause gallery
 			pause=false;
 			setTimeout(gallery, 5000);
+			document.querySelector("#play").src = "material/pause.png";
 		};
 		function nextPic(){ //trigger to load next pic
 			currentPic --;
@@ -288,7 +290,7 @@
 		<a href="#" title="Previous"><img src="material/previous.png" alt="Previous" /></a>
 		</div>
 		<div id="divPause">
-		<a href="#" title="Pause/Play"> <img src="material/play.png" alt="Play" id="play" /> </a>
+		<a href="#" title="Pause/Play"> <img src="material/pause.png" alt="Play" id="play" /> </a>
 		</div>
 		<div id="next">
 		<a href="#" title="Next"><img src="material/next.png" alt="Next" /> </a>
