@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="style.css">
 	  <script> 
 	  "use strict";
-	  (function(){ //font: quick sand regular
+	  (function(){ //font: quicksand regular? TODO: Gallery Bug? Write About page.
 		//init parse
 			Parse.initialize("j98M3FFiX4SE5AMkVMemB3Hx3MRMsYsoOOVPU9E4", "ClttYScbdV99VRVQKc3GgaD41KG95Iiq0TEUabGn");
 		//vars
@@ -121,7 +121,7 @@
 		function gallery(){ //start gallery
 			if(!pause){
 				nextPic();
-				setTimeout(gallery, 10000);
+				setTimeout(gallery, 8000);
 			}
 			else{
 				return;
@@ -173,7 +173,7 @@
 				getEqualTo("pic", "nr", nr, function(results){
 					img[results[0].attributes.nr] = {};
 					img[results[0].attributes.nr].pic = new Image;
-					if(fileSmall){
+					if(fileSmall){ //use right file size
 						if(results[0].attributes.fileSmall){
 							img[results[0].attributes.nr].pic.src = results[0].attributes.fileSmall._url;
 						}
@@ -279,7 +279,7 @@
 	</div>
 	<div id="header">
 		<img src="material/logo.png" alt="Logo" /> 
-		<div><a href="#" title="Permanent link to this picture"><h2> Permalink: </h2> <input id="path" type="text" readonly /></a></div>
+		<div id="permalink"><a href="#" title="Permanent link to this picture"><h2> Permalink: </h2></a> <input id="path" type="text" readonly /></div>
 		<a href="about.html"><h2>About</h2></a>
 	</div>
 	<div id="content">
